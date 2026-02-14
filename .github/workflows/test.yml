@@ -22,42 +22,6 @@ jobs:
     steps:
       - run: 'true'
 
-  test_ros:
-    name: "Test ROS package"
-    runs-on: ubuntu-latest
-    needs: pre_condition
-    strategy:
-      fail-fast: false
-      matrix:
-        ros_distribution: # ROS 1 tests only run on Ubuntu
-          - noetic
-
-        # Define the OCI image(s) associated with each ROS distribution.
-        # The include syntax allows additional variables to be defined, like
-        # container_image in this case. See documentation:
-        # https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#example-including-configurations-in-a-matrix-build
-        #
-        # Platforms are defined in REP 3: https://ros.org/reps/rep-0003.html
-        include:
-          # Noetic Ninjemys (May 2020 - May 2025)
-          - container_image: rostooling/setup-ros-docker:ubuntu-focal-latest
-            ros_distribution: noetic
-    container:
-      image: ${{ matrix.container_image }}
-    steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-node@v4.4.0
-        with:
-          node-version: "20.x"
-      - run: .github/workflows/build-and-test.sh
-      - uses: ./
-        id: action-ros-ci
-        with:
-          vcs-repo-file-url: "${{ github.workspace }}/.github/workflows/ros_tutorials.repos"
-          package-name: roscpp_tutorials
-          target-ros1-distro: ${{ matrix.ros_distribution }}
-      - run: test -d "${{ steps.action-ros-ci.outputs.ros-workspace-directory-name }}/install/roscpp_tutorials"
-        name: "Check that roscpp_tutorials install directory is present"
 
   test_ros2_mac_win:
     name: "Test ROS 2 packages in repository"
@@ -97,7 +61,7 @@ jobs:
     name: "Test ROS 2 humble package with ROS dependencies"
     runs-on: ubuntu-latest
     container:
-      image: rostooling/setup-ros-docker:ubuntu-jammy-latest
+      image: rostooling/setup-ros-docker:ubuntu-noble-latest
     needs: pre_condition
     steps:
       - uses: actions/checkout@v5
@@ -111,7 +75,7 @@ jobs:
     name: "Test with rosdep-skip-keys option"
     runs-on: ubuntu-latest
     container:
-      image: rostooling/setup-ros-docker:ubuntu-jammy-latest
+      image: rostooling/setup-ros-docker:ubuntu-noble-latest
     needs: pre_condition
     steps:
       - uses: actions/checkout@v5
@@ -176,7 +140,7 @@ jobs:
         # Platforms are defined in REP 2000: https://ros.org/reps/rep-2000.html
         include:
           # Humble Hawksbill (May 2022 - May 2027)
-          - container_image: rostooling/setup-ros-docker:ubuntu-jammy-latest
+          - container_image: rostooling/setup-ros-docker:ubuntu-noble-latest
             ros_distribution: humble
 
           # Jazzy Jalisco (May 2024 - May 2029)
@@ -184,7 +148,7 @@ jobs:
             ros_distribution: jazzy
 
           # Rolling Ridley (see REP 2002: https://www.ros.org/reps/rep-2002.html)
-          - container_image: rostooling/setup-ros-docker:ubuntu-noble-latest
+          - container_image: rostooling/setup-ros-docker:ubuntu-jammy-latest
             ros_distribution: rolling
     container:
       image: ${{ matrix.container_image }}
