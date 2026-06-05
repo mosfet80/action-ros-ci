@@ -201,7 +201,6 @@ async function installRosdeps(
 	)})
 	# suppress errors from unresolved install keys to preserve backwards compatibility
 	# due to difficulty reading names of some non-catkin dependencies in the ros2 core
-	# see https://index.ros.org/doc/ros2/Installation/Foxy/Linux-Development-Setup/#install-dependencies-using-rosdep
 	rosdep update && rosdep install -r --from-paths $package_paths --ignore-src --skip-keys "fastcdr rti-connext-dds-6.0.1 urdfdom_headers ${filterNonEmptyJoin(
 		skipKeys,
 	)}" --rosdistro $DISTRO -y`;
