@@ -10,37 +10,37 @@ import { FlatCompat } from "@eslint/eslintrc";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const compat = new FlatCompat({
-    baseDirectory: __dirname,
-    recommendedConfig: js.configs.recommended,
-    allConfig: js.configs.all
+	baseDirectory: __dirname,
+	recommendedConfig: js.configs.recommended,
+	allConfig: js.configs.all,
 });
 
 export default defineConfig([
-    globalIgnores(["**/dist", "**/coverage", "**/*.md", "**/*.yml", "**/*.yaml"]),
-    {
-        extends: compat.extends(
-            "eslint:recommended",
-            "plugin:@typescript-eslint/eslint-recommended",
-            "plugin:prettier/recommended",
-        ),
+	globalIgnores(["**/dist", "**/coverage", "**/*.md", "**/*.yml", "**/*.yaml"]),
+	{
+		extends: compat.extends(
+			"eslint:recommended",
+			"plugin:@typescript-eslint/eslint-recommended",
+			"plugin:prettier/recommended",
+		),
 
-        plugins: {
-            "@typescript-eslint": typescriptEslint,
-        },
+		plugins: {
+			"@typescript-eslint": typescriptEslint,
+		},
 
-        languageOptions: {
-            globals: {
-                ...globals.commonjs,
-                ...globals.node,
-                Atomics: "readonly",
-                SharedArrayBuffer: "readonly",
-            },
+		languageOptions: {
+			globals: {
+				...globals.commonjs,
+				...globals.node,
+				Atomics: "readonly",
+				SharedArrayBuffer: "readonly",
+			},
 
-            parser: tsParser,
-            ecmaVersion: 2018,
-            sourceType: "module",
-        },
+			parser: tsParser,
+			ecmaVersion: 2018,
+			sourceType: "module",
+		},
 
-        rules: {},
-    },
+		rules: {},
+	},
 ]);
