@@ -68,7 +68,7 @@ jobs:
       matrix:
         os:
           # - macOS-latest
-          - windows-2022
+          - windows-2025
         ros_distribution: [humble, jazzy, kilted, lyrical]
     env:
       INSTALL_TYPE: ${{ startsWith(matrix.os, 'windows') && 'merged' || 'default' }}
@@ -241,15 +241,15 @@ jobs:
             ros_distribution: lyrical
           - os: ubuntu:26.04
             ros_distribution: rolling
-          - os: windows-2022
+          - os: windows-2025
             ros_distribution: humble
-          - os: windows-2022
+          - os: windows-2025
             ros_distribution: jazzy
-          - os: windows-2022
+          - os: windows-2025
             ros_distribution: kilted
-          - os: windows-2022
+          - os: windows-2025
             ros_distribution: lyrical
-          - os: windows-2022
+          - os: windows-2025
             ros_distribution: rolling
           # - os: macOS-latest
           #   ros_distribution: humble
