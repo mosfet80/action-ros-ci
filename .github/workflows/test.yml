@@ -102,7 +102,7 @@ jobs:
       image: rostooling/setup-ros-docker:ubuntu-jammy-latest
     needs: pre_condition
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - uses: ./
         with:
           package-name: rmw
@@ -116,7 +116,7 @@ jobs:
       image: rostooling/setup-ros-docker:ubuntu-jammy-latest
     needs: pre_condition
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       # Skip installing test_depend dependency and verifies it isn't installed.
       - uses: ./
         with:
