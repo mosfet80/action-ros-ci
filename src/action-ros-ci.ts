@@ -132,8 +132,7 @@ export async function execShellCommand(
 }
 
 //Determine whether all inputs name supported ROS distributions.
-export function validateDistros(
-	ros2Distro: string
+export function validateDistros(ros2Distro:·string
 ): boolean {
 	if (!ros2Distro) {
 		core.setFailed(
@@ -485,9 +484,7 @@ async function run_throw(): Promise<void> {
 		env: {
 			...process.env,
 			ROS_VERSION: targetRos2Distro ? "2" : "1",
-			ROS_PYTHON_VERSION:
-				targetRos2Distro
-					? "3" : "2",
+			ROS_PYTHON_VERSION: targetRos2Distro ? "3" : "2",
 		},
 	};
 	if (colconDefaultsFile !== "") {
