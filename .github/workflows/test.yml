@@ -22,7 +22,7 @@ jobs:
     steps:
       - run: 'true'
 
- test_ros2_mac_win:
+  test_ros2_mac_win:
     name: "Test ROS 2 packages in repository"
     runs-on: ${{ matrix.os }}
     needs: pre_condition
