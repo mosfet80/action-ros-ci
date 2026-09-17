@@ -135,7 +135,7 @@ export async function execShellCommand(
 export function validateDistros(
 	ros2Distro: string
 ): boolean {
-	if ( !ros2Distro) {
+	if (!ros2Distro) {
 		core.setFailed(
 			`Neither '${targetROS2DistroInput}' inputs were set, at least one is required.`,
 		);
