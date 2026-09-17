@@ -31,18 +31,18 @@ describe("execShellCommand test suite", () => {
 
 describe("validate distribution test", () => {
 	it("validates that the ros distribution validator acts correctly", async () => {
-		expect(actionRosCi.validateDistros("", "humble")).toBe(true);
-		expect(actionRosCi.validateDistros("", "iron")).toBe(true);
-		expect(actionRosCi.validateDistros("", "jazzy")).toBe(true);
-		expect(actionRosCi.validateDistros("", "kilted")).toBe(true);
-		expect(actionRosCi.validateDistros("", "lyrical")).toBe(true);
-		expect(actionRosCi.validateDistros("", "rolling")).toBe(true);
+		expect(actionRosCi.validateDistros("humble")).toBe(true);
+		expect(actionRosCi.validateDistros("iron")).toBe(true);
+		expect(actionRosCi.validateDistros("jazzy")).toBe(true);
+		expect(actionRosCi.validateDistros("kilted")).toBe(true);
+		expect(actionRosCi.validateDistros("lyrical")).toBe(true);
+		expect(actionRosCi.validateDistros("rolling")).toBe(true);
 
-		expect(actionRosCi.validateDistros("", "")).toBe(false);
-		expect(actionRosCi.validateDistros("groovy", "")).toBe(false);
-		expect(actionRosCi.validateDistros("", "bouncy")).toBe(false);
-		expect(actionRosCi.validateDistros("apples", "bananas")).toBe(false);
-		expect(actionRosCi.validateDistros("apples", "rolling")).toBe(false);
+		expect(actionRosCi.validateDistros("")).toBe(false);
+		expect(actionRosCi.validateDistros("groovy")).toBe(false);
+		expect(actionRosCi.validateDistros("bouncy")).toBe(false);
+		expect(actionRosCi.validateDistros("bananas")).toBe(false);
+		expect(actionRosCi.validateDistros("rolling")).toBe(false);
 		// Check and reset process exit code, which is set when core.setFailed() is called
 		expect(process.exitCode).toBe(core.ExitCode.Failure);
 		process.exitCode = core.ExitCode.Success;
