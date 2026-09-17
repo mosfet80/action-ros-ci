@@ -31,7 +31,6 @@ describe("execShellCommand test suite", () => {
 
 describe("validate distribution test", () => {
 	it("validates that the ros distribution validator acts correctly", async () => {
-
 		expect(actionRosCi.validateDistros("", "humble")).toBe(true);
 		expect(actionRosCi.validateDistros("", "iron")).toBe(true);
 		expect(actionRosCi.validateDistros("", "jazzy")).toBe(true);
