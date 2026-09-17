@@ -55,7 +55,6 @@ jobs:
         with:
           vcs-repo-file-url: "${{ github.workspace }}/.github/workflows/ros_tutorials.repos"
           package-name: roscpp_tutorials
-          target-ros1-distro: ${{ matrix.ros_distribution }}
       - run: test -d "${{ steps.action-ros-ci.outputs.ros-workspace-directory-name }}/install/roscpp_tutorials"
         name: "Check that roscpp_tutorials install directory is present"
 
