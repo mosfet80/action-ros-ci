@@ -128,7 +128,7 @@ export async function execShellCommand(
 }
 
 //Determine whether all inputs name supported ROS distributions.
-export function validateDistros(ros2Distro:·string
+export function validateDistros(ros2Distro: string
 ): boolean {
 	if (!ros2Distro) {
 		core.setFailed(
