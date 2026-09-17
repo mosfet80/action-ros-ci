@@ -11,10 +11,6 @@ import retry from "async-retry";
 import * as dep from "./dependencies";
 
 const validROS2Distros: string[] = [
-	"dashing",
-	"eloquent",
-	"foxy",
-	"galactic",
 	"humble",
 	"iron",
 	"jazzy",
