@@ -10,7 +10,6 @@ import fs from "fs";
 import retry from "async-retry";
 import * as dep from "./dependencies";
 
-const validROS1Distros: string[] = ["kinetic", "lunar", "melodic", "noetic"];
 const validROS2Distros: string[] = [
 	"dashing",
 	"eloquent",
@@ -23,7 +22,6 @@ const validROS2Distros: string[] = [
 	"lyrical",
 	"rolling",
 ];
-const targetROS1DistroInput: string = "target-ros1-distro";
 const targetROS2DistroInput: string = "target-ros2-distro";
 const isLinux: boolean = process.platform == "linux";
 const isWindows: boolean = process.platform == "win32";
@@ -135,18 +133,11 @@ export async function execShellCommand(
 
 //Determine whether all inputs name supported ROS distributions.
 export function validateDistros(
-	ros1Distro: string,
 	ros2Distro: string,
 ): boolean {
-	if (!ros1Distro && !ros2Distro) {
+	if ( !ros2Distro) {
 		core.setFailed(
-			`Neither '${targetROS1DistroInput}' or '${targetROS2DistroInput}' inputs were set, at least one is required.`,
-		);
-		return false;
-	}
-	if (ros1Distro && validROS1Distros.indexOf(ros1Distro) <= -1) {
-		core.setFailed(
-			`Input ${ros1Distro} was not a valid ROS 1 distribution for '${targetROS1DistroInput}'. Valid values: ${validROS1Distros}`,
+			`Neither '${targetROS2DistroInput}' inputs were set, at least one is required.`,
 		);
 		return false;
 	}
@@ -184,7 +175,6 @@ async function installRosdeps(
 	skipKeys: string[],
 	workspaceDir: string,
 	options: im.ExecOptions,
-	ros1Distro?: string,
 	ros2Distro?: string,
 ): Promise<number> {
 	const scriptName = "install_rosdeps.sh";
@@ -208,12 +198,6 @@ async function installRosdeps(
 	fs.writeFileSync(scriptPath, scriptContent, { mode: 0o766 });
 
 	let exitCode = 0;
-	if (ros1Distro) {
-		exitCode += await execShellCommand(
-			[`./${scriptName} ${ros1Distro}`],
-			options,
-		);
-	}
 	if (ros2Distro) {
 		exitCode += await execShellCommand(
 			[`./${scriptName} ${ros2Distro}`],
@@ -231,7 +215,6 @@ async function checkRosdeps(
 	skipKeys: string[],
 	workspaceDir: string,
 	options: im.ExecOptions,
-	ros1Distro?: string,
 	ros2Distro?: string,
 ): Promise<number> {
 	const scriptName = "check_rosdeps.sh";
@@ -252,12 +235,6 @@ async function checkRosdeps(
 	fs.writeFileSync(scriptPath, scriptContent, { mode: 0o766 });
 
 	let exitCode = 0;
-	if (ros1Distro) {
-		exitCode += await execShellCommand(
-			[`./${scriptName} ${ros1Distro}`],
-			options,
-		);
-	}
 	if (ros2Distro) {
 		exitCode += await execShellCommand(
 			[`./${scriptName} ${ros2Distro}`],
@@ -423,7 +400,6 @@ async function run_throw(): Promise<void> {
 	const rosWorkspaceName = "ros_ws";
 	core.setOutput("ros-workspace-directory-name", rosWorkspaceName);
 	const rosWorkspaceDir = path.join(workspace, rosWorkspaceName);
-	const targetRos1Distro = core.getInput(targetROS1DistroInput);
 	const targetRos2Distro = core.getInput(targetROS2DistroInput);
 	const vcsRepoFileUrlListAsString = core.getInput("vcs-repo-file-url") || "";
 	let vcsRepoFileUrlList = vcsRepoFileUrlListAsString.split(RegExp("\\s"));
@@ -463,7 +439,7 @@ async function run_throw(): Promise<void> {
 
 	const vcsRepoFileUrlListNonEmpty = vcsRepoFileUrlList.filter((x) => x != "");
 
-	if (!validateDistros(targetRos1Distro, targetRos2Distro)) {
+	if (!validateDistros(targetRos2Distro)) {
 		return;
 	}
 
@@ -510,7 +486,7 @@ async function run_throw(): Promise<void> {
 			...process.env,
 			ROS_VERSION: targetRos2Distro ? "2" : "1",
 			ROS_PYTHON_VERSION:
-				targetRos2Distro || (targetRos1Distro && targetRos1Distro == "noetic")
+				targetRos2Distro
 					? "3"
 					: "2",
 		},
@@ -689,7 +665,6 @@ done`;
 			rosdepSkipKeysSelection,
 			rosWorkspaceDir,
 			options,
-			targetRos1Distro,
 			targetRos2Distro,
 		);
 	}
@@ -700,7 +675,6 @@ done`;
 			rosdepSkipKeysSelection,
 			rosWorkspaceDir,
 			options,
-			targetRos1Distro,
 			targetRos2Distro,
 		);
 	}
@@ -739,16 +713,6 @@ done`;
 	// Source any installed ROS distributions if they are present
 	let colconCommandPrefix: string[] = [];
 	if (isLinux) {
-		if (targetRos1Distro) {
-			const ros1SetupPath = `/opt/ros/${targetRos1Distro}/setup.sh`;
-			if (fs.existsSync(ros1SetupPath)) {
-				colconCommandPrefix = [
-					...colconCommandPrefix,
-					`source ${ros1SetupPath}`,
-					`&&`,
-				];
-			}
-		}
 		if (targetRos2Distro) {
 			const ros2SetupPath = `/opt/ros/${targetRos2Distro}/setup.sh`;
 			if (fs.existsSync(ros2SetupPath)) {
