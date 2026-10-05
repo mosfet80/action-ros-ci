@@ -79,6 +79,11 @@ jobs:
         with:
           node-version: "24.x"
       - run: .github/workflows/build-and-test.sh
+
+      - name: Upgrade pip and setuptools to fix pkgutil.ImpImporter issue
+        shell: bash
+        run: python3 -m pip install --upgrade pip setuptools || python -m pip install --upgrade pip setuptools
+      
       - uses: ros-tooling/setup-ros@main
         with:
           required-ros-distributions: ${{ matrix.ros_distribution }}
